@@ -412,6 +412,28 @@ chapter for the Cox model. Only their derivation has changed.\end{itemize}
 \end{itemize}
 
 \subsection{Practical Note}
-Martingale and deviance residuals for these parametric models are available in S-Plus.
+Martingale and deviance residuals for these parametric models are available in R with the `survival` package.
+
+\noindent{\textbf{Example Heart data}}
+
+Survival of patients on the waiting list for the Stanford heart transplant program. (Found as the example data in R). Covariates include age, an indicator for if the patient has had a prior bypass surgery (surgery), an indicator for if they've had a heart transplant (transplant), and interaction between age and transplant as well as surgery and transplant. ($n = 172$) 
+
+<<>>=
+library(survival)
+data(heart)
+
+fit <- coxph(Surv(start, stop, event) ~ (age + surgery) * transplant,
+             data=heart)
+mresid <- resid(fit, collapse=heart$id) #Martingale Residuals
+dresid <- resid(fit, collapse=heart$id, type = "deviance") #Deviance Residuals
+@
+
+<<>>=
+par(mfrow = c(2, 1))
+plot(seq(mresid), mresid, xlab = "time", ylab = "Martingale Residuals")
+plot(seq(dresid), dresid, xlab = "time", ylab = "Deviance Residuals")
+@
+
+
 
 \end{document}
