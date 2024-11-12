@@ -188,18 +188,25 @@
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Diagnostic Methods for Parametric Models (KM p. 409) \\
-\small{(Notes by Mark Eschmann, Updated by Sonish Lamsal)}} 
+\small{(Last Updated by Carson Slater, Jacob Moore, Thomas Reinke)}} 
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \normalsize
 
 
 
+% \begin{itemize}
+% 	\item In the last sections, a variety of models for univariate survival data and several parametric models that can be used to study the effects of covariates on survival were presented.
+% 	\item In this section, graphical checks of the appropriateness of these models is focused.
+% 	\item Graphical checks of appropriateness is favored rather than formal statistical tests of lack of fit because these tests tend either to have low power for small-sample sizes or they always reject a given model for large samples.
+% 	\item The graphical models discussed here serve as a model of rejecting clearly inappropriate models, not to ``prove" that a particular parametric model is correct.
+% \end{itemize}
+
 \begin{itemize}
-	\item In the last sections, a variety of models for univariate survival data and several parametric models that can be used to study the effects of covariates on survival were presented.
-	\item In this section, graphical checks of the appropriateness of these models is focused.
-	\item Graphical checks of appropriateness is favored rather than formal statistical tests of lack of fit because these tests tend either to have low power for small-sample sizes or they always reject a given model for large samples.
-	\item The graphical models discussed here serve as a model of rejecting clearly inappropriate models, not to ``prove" that a particular parametric model is correct.
+\item In the concluding sections, a range of models for univariate survival data and several parametric models were presented, which facilitate the investigation of the effects of covariates on survival outcomes.
+\item This subsection focuses on graphical checks of the appropriateness of these models, rather than relying on formal statistical tests of lack of fit.
+\item Graphical checks are preferred over formal statistical tests due to their superior performance in small-sample sizes, where they are more sensitive to deviations from model assumptions. Formal statistical tests in this context are criticized due to low power.
+\item The graphical models discussed in this context serve as a paradigm for identifying and rejecting clearly inappropriate models, rather than providing conclusive evidence for the correctness of a particular parametric model.
 \end{itemize}
 \subsection{Checking adequacy of given model in a univariate setting}
 
@@ -462,6 +469,37 @@ chapter for the Cox model. Only their derivation has changed.\end{itemize}
 \end{itemize}
 
 \subsection{Practical Note}
-Martingale and deviance residuals for these parametric models are available in S-Plus.
+Martingale and deviance residuals for these parametric models are available in R with the `survival` package.
+
+\noindent{\textbf{Example Heart data}}
+
+Survival of patients on the waiting list for the Stanford heart transplant program. (Found as the example data in R). Covariates include age, an indicator for if the patient has had a prior bypass surgery (surgery), an indicator for if they've had a heart transplant (transplant), and interaction between age and transplant as well as surgery and transplant. ($n = 172$) 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hldef{(survival)}
+\hlkwd{data}\hldef{(heart)}
+
+\hldef{fit} \hlkwb{<-} \hlkwd{coxph}\hldef{(}\hlkwd{Surv}\hldef{(start, stop, event)} \hlopt{~} \hldef{(age} \hlopt{+} \hldef{surgery)} \hlopt{*} \hldef{transplant,}
+             \hlkwc{data}\hldef{=heart)}
+\hldef{mresid} \hlkwb{<-} \hlkwd{resid}\hldef{(fit,} \hlkwc{collapse}\hldef{=heart}\hlopt{$}\hldef{id)} \hlcom{#Martingale Residuals}
+\hldef{dresid} \hlkwb{<-} \hlkwd{resid}\hldef{(fit,} \hlkwc{collapse}\hldef{=heart}\hlopt{$}\hldef{id,} \hlkwc{type} \hldef{=} \hlsng{"deviance"}\hldef{)} \hlcom{#Deviance Residuals}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{par}\hldef{(}\hlkwc{mfrow} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{2}\hldef{,} \hlnum{1}\hldef{))}
+\hlkwd{plot}\hldef{(}\hlkwd{seq}\hldef{(mresid), mresid,} \hlkwc{xlab} \hldef{=} \hlsng{"time"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Martingale Residuals"}\hldef{)}
+\hlkwd{plot}\hldef{(}\hlkwd{seq}\hldef{(dresid), dresid,} \hlkwc{xlab} \hldef{=} \hlsng{"time"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Deviance Residuals"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+\end{knitrout}
+
+
 
 \end{document}
