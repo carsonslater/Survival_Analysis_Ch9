@@ -213,12 +213,10 @@
 \begin{itemize}
 	\item The key idea is ``to find a function of the cumulative hazard rate
 		which is linear in some function of time.''
-	\item The basic plot is made by estimating the cumulative hazard eate by Nelson-aalen 				estimator.
+	\item The basic plot is made by estimating the cumulative hazard rate by Nelson-Aalen 				estimator.
+\end{itemize}
 
-
-\item For example, consider the log logistic distribution. 
-
-In this case
+For example, consider the log logistic distribution. In this case
 $\widehat{H}(t)=\log(1+\lambda t^{\alpha})$, thus we have that
 
 
@@ -227,10 +225,7 @@ $\widehat{H}(t)=\log(1+\lambda t^{\alpha})$, thus we have that
 &\Rightarrow\log\left[\exp(\widehat{H}(t))-1\right]=\log\lambda+\alpha\log t
 \end{align*}
 
-So, a plot of $ln\{exp[H(x)]-1\}$ versus $lnx$ should be approximately linear. 
-
-
-\end{itemize}
+So, a plot of $\ln\{\exp[H(t)]-1\}$ versus $\ln t$ should be approximately linear. 
 
 \subsection{Other Models}
 
@@ -246,8 +241,8 @@ Plot\tabularnewline
 \hline 
 \hline 
 Log logistic &
-$\log(1+\lambda t^{\alpha})$ &
-$\log\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\log(t)$\tabularnewline
+$\ln(1+\lambda t^{\alpha})$ &
+$\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularnewline
 \hline 
 Exponential &
 $\lambda x$ &
@@ -255,11 +250,11 @@ $\widehat{H}(t)$ versus $t$\tabularnewline
 \hline 
 Weibull &
 $\lambda x^{\alpha}$ &
-$\log\left(\widehat{H}(t)\right)$ versus $\log(t)$\tabularnewline
+$\ln\left(\widehat{H}(t)\right)$ versus $\ln(t)$\tabularnewline
 \hline 
 Log normal &
-$-\log\left\{ 1-\Phi\left[\left(\log(t)-\mu\right)/\sigma\right]\right\} $ &
-$\Phi^{-1}\left[1-\exp\left(-\widehat{H}(t)\right)\right]$ versus $\log(t)$\tabularnewline
+$-\ln\left\{ 1-\Phi\left[\left(\ln(t)-\mu\right)/\sigma\right]\right\} $ &
+$\Phi^{-1}\left[1-\exp\left(-\widehat{H}(t)\right)\right]$ versus $\ln(t)$\tabularnewline
 \hline 
 \end{tabular} 
 \end{center}
@@ -286,30 +281,24 @@ four diagnostic plots recommended above.
 	\item In the first figure the Allo data
 appear to be nonlinear while the Auto data is roughly linear.
 	\item  For the other three figures, the book claims that they are roughly linear
-for both groups.
-\end{itemize}
-
-\noindent 
-Note that the book generally chops off extreme x values. The probable
+for both groups.\footnote{Note that the book generally chops off extreme $t$ values. The probable
 justification is the small sample size in the tails although the book
 doesn't even mention that it is does this at all, and only a comparison
 of the figures that I generated versus figures 12.1-4 in the book
-shows that they did in fact do this.
+shows that they did in fact do this.}
+\end{itemize}
 
 \newpage
 
 \subsection{Checking appropriateness of accelerated failure-time model}
 \begin{itemize}
 \item When comparing two groups, an alternative to the proportional hazards model is the accelerated failure-time model.
-\item A q-q plot can be used to determine the adequacy of this model
+\item A QQ plot can be used to determine the adequacy of this model.
 \item The plot is based on the fact that, for the accelerated failure-time model,
-
 
 \begin{align*}
 S_{1}(t) & =S_{2}(\theta t),
 \end{align*}
-
-
 
 where $S_{0}$ and $S_{1}$ are the survival functions in the two
 groups and $\theta$ is the acceleration factor.
@@ -351,7 +340,7 @@ are calculated for each group and plotted against each other below
 
 
 
-Note that only a portion of the range $.05$ to $.35$ is actually
+\noindent Note that only a portion of the range $.05$ to $.35$ is actually
 plotted above, but the portion that is plotted looks roughly linear.
 The figure appears to have a slope of about $\theta=0.6$.
 
