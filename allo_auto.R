@@ -16,25 +16,47 @@ aa <- data("alloauto")
 # Example uses 'group' as a placeholder; adjust if necessary.
 
 # Fit the survival model for each group and extract cumulative hazards
-km_fit_groups <- alloauto %>%
+km_fit_groups <- alloauto |> 
   group_by(type) %>%
   do(
     fit = survfit(Surv(time, delta) ~ 1, data = .)
-  ) %>%
+  ) |> 
   mutate(
     time = list(fit$time),
     cumhaz = list(fit$cumhaz)
-  ) %>%
+  ) |> 
   unnest(c(time, cumhaz)) |> 
   select(type, time, cumhaz) |> mutate(type = as.factor(type))
 
+allo_fit <- alloauto %>%
+  filter(type == 1) %>%
+  survfit(Surv(time, delta) ~ 1, data = .)
+
+auto_fit <- alloauto %>%
+  filter(type == 2) %>%
+  survfit(Surv(time, delta) ~ 1, data = .)
+
+tb <- tibble(
+  "Time" = 1:length(auto_fit$cumhaz[-49]),
+  "allo_ch" = c(allo_fit$cumhaz, NA),
+  "auto_ch" = auto_fit$cumhaz[-49]
+) |> pivot_longer(
+  cols = c("allo_ch", "auto_ch"),
+  names_to = "type"
+)
+
+tb |> 
+  ggplot(aes(Time, value, colour = type)) +
+  geom_step()
+
+
 # Plot the log cumulative hazard for each group
-ggplot(km_fit_groups, aes(x = time, y = log(cumhaz), group = type, color = type)) +
-  geom_step() +
-  labs(x = "Time", y = "Log Cumulative Hazard", 
-       title = "Log Estimated Cumulative Hazard by Group") +
-  xlim(0, 30) +
-  theme_minimal()
+# ggplot(km_fit_groups, aes(x = time, y = log(cumhaz), group = type, color = type)) +
+#   geom_step() +
+#   labs(x = "Time", y = "Log Cumulative Hazard", 
+#        title = "Log Estimated Cumulative Hazard by Group") +
+#   xlim(0, 30) +
+#   theme_minimal()
 
 # 
 # # Fit a Kaplan-Meier survival curve
