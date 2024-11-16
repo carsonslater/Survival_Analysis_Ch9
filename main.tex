@@ -240,10 +240,6 @@ Cumulative Hazard Rate &
 Plot\tabularnewline
 \hline 
 \hline 
-Log logistic &
-$\ln(1+\lambda t^{\alpha})$ &
-$\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularnewline
-\hline 
 Exponential &
 $\lambda x$ &
 $\widehat{H}(t)$ versus $t$\tabularnewline
@@ -252,9 +248,13 @@ Weibull &
 $\lambda x^{\alpha}$ &
 $\ln\left(\widehat{H}(t)\right)$ versus $\ln(t)$\tabularnewline
 \hline 
-Log normal &
+Log Normal &
 $-\ln\left\{ 1-\Phi\left[\left(\ln(t)-\mu\right)/\sigma\right]\right\} $ &
 $\Phi^{-1}\left[1-\exp\left(-\widehat{H}(t)\right)\right]$ versus $\ln(t)$\tabularnewline
+\hline 
+Log Logistic &
+$\ln(1+\lambda t^{\alpha})$ &
+$\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularnewline
 \hline 
 \end{tabular} 
 \end{center}
@@ -265,18 +265,6 @@ $\Phi^{-1}\left[1-\exp\left(-\widehat{H}(t)\right)\right]$ versus $\ln(t)$\tabul
 
 \noindent Consider the Allo-Auto data set. Below are plots of the
 four diagnostic plots recommended above.
-
-\begin{figure}
-
-
-\includegraphics[scale=0.9]{figures/presentation_pic1.pdf}
-
-\caption{Hazard plots for all four parametric models in this section for allo
-(solid line) and auto (dashed line) transplant groups. }
-
-
-\end{figure}
-
 \begin{itemize}
 	\item In the first figure the Allo data
 appear to be nonlinear while the Auto data is roughly linear.
@@ -287,6 +275,21 @@ doesn't even mention that it is does this at all, and only a comparison
 of the figures that I generated versus figures 12.1-4 in the book
 shows that they did in fact do this.}
 \end{itemize}
+
+\newpage
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-1-1} 
+
+}
+
+
+\end{knitrout}
+
 
 \newpage
 
@@ -486,7 +489,7 @@ Survival of patients on the waiting list for the Stanford heart transplant progr
 \hlkwd{plot}\hldef{(}\hlkwd{seq}\hldef{(dresid), dresid,} \hlkwc{xlab} \hldef{=} \hlsng{"time"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Deviance Residuals"}\hldef{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
 \end{knitrout}
 
 
