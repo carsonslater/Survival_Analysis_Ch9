@@ -214,7 +214,7 @@ $\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularn
 
 \noindent\textit{\textbf{Example: Waiting Time to Transplant (KM pp. 411-413)}}: 
 
-\noindent Consider the data presented in Section 1.10 of KM comparing allogeneic (Allo) bone marrow transplants from an HLA-matched sibling or an autogeneic (Auto) bone marrow transplant for patients with either Hodgkin’s disease (HL) or non-Hodgkin’s lymphoma (NHL). Below are plots of the four diagnostic plots recommended above.
+\noindent Consider the data presented in Section 1.10 of KM comparing \textcolor{red}{allogeneic} (Allo) bone marrow transplants from an HLA-matched sibling or an \textcolor{blue}{autogeneic} (Auto) bone marrow transplant for patients with either Hodgkin’s disease (HL) or non-Hodgkin’s lymphoma (NHL). Below are plots of the four diagnostic plots recommended above.
 \begin{itemize}
 	\item In the first figure, the Allo data appear to be nonlinear while the Auto data is roughly linear.
 	\item For the other three figures, the book claims that they are roughly linear for both groups.\footnote{Note that the book generally chops off extreme $t$ values. The probable justification is the small sample size in the tails, although the book doesn't even mention that it does this at all, and only a comparison of the figures that I generated versus figures 12.1-4 in the book shows that they did in fact do this.}
@@ -224,7 +224,7 @@ $\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularn
 
 
 
-<<echo=FALSE, fig.align='center', fig.width=8, fig.height=9, warning=FALSE, fig.cap='Four diagnostic plots for the allogeneic (red) and autogeneic (blue) transplant types.'>>=
+<<echo=FALSE, fig.align='center', fig.width=8, fig.height=9, warning=FALSE>>=
 # Allo-Auto Data ----------------------------------------------------------
 # Survival Analysis Ch. 9 -------------------------------------------------
 
