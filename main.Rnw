@@ -153,10 +153,10 @@
 % \end{itemize}
 
 \begin{itemize}
-\item In the preceding sections, a range of models for univariate survival data and several parametric models were presented, which facilitate the investigation of the effects of covariates on survival outcomes.
-\item This chapter focuses on graphical checks of the appropriateness of these models, rather than relying on formal statistical tests of lack of fit.
+\item In the concluding sections, a range of models for univariate survival data and several parametric models were presented, which facilitate the investigation of the effects of covariates on survival outcomes.
+\item This subsection focuses on graphical checks of the appropriateness of these models, rather than relying on formal statistical tests of lack of fit.
 \item Graphical checks are preferred over formal statistical tests due to their superior performance in small-sample sizes, where they are more sensitive to deviations from model assumptions. Formal statistical tests in this context are criticized due to low power.
-\item The graphical models discussed in this context serve as a paradigm for identifying and rejecting clearly inappropriate models, rather than providing conclusive evidence for the correctness of a particular parametric model. We prioritize graphical methods over formal statistical tests due to their limitations in detecting model misspecification, particularly in small samples or large datasets. Graphical checks serve as a means to identify clearly inadequate models, rather than verifying the correctness of specific parametric models.
+\item The graphical models discussed in this context serve as a paradigm for identifying and rejecting clearly inappropriate models, rather than providing conclusive evidence for the correctness of a particular parametric model.
 \end{itemize}
 \subsection{Checking adequacy of given model in a univariate setting}
 
@@ -164,10 +164,11 @@
 	\item The key idea is ``to find a function of the cumulative hazard rate
 		which is linear in some function of time.''
 	\item The basic plot is made by estimating the cumulative hazard rate by Nelson-Aalen 				estimator.
+\end{itemize}
 
-
-\item For example, consider the log logistic distribution. In this case
+For example, consider the log logistic distribution. In this case
 $\widehat{H}(t)=\log(1+\lambda t^{\alpha})$, thus we have that
+
 
 \begin{align*}
 &\quad \exp(\widehat{H}(t))=1+\lambda t^{\alpha} \\
@@ -176,7 +177,6 @@ $\widehat{H}(t)=\log(1+\lambda t^{\alpha})$, thus we have that
 
 So, a plot of $\ln\{\exp[H(t)]-1\}$ versus $\ln t$ should be approximately linear. 
 
-\end{itemize}
 \subsection{Other Models}
 
 Below is a table of other plots that can be made for some standard parametric models.
@@ -210,11 +210,10 @@ $\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularn
 \end{center}
 
 
-\noindent\textit{\textbf{Example:
-Waiting Time to Transplant (KM pp. 360-362)}} Consider the data presented in
-Section 1.10 of KM12 comparing allogeneic (Allo) bone marrow transplants from an HLA-matched
-sibling or an autogeneic (Auto) bone marrow transplant for patients with either Hodgkin’s disease
-(HL) or non-Hodgkin’s lymphoma (NHL). Below are plots of the
+\noindent{\textbf{Example}
+12.1 (continued)}
+
+\noindent Consider the Allo-Auto data set. Below are plots of the
 four diagnostic plots recommended above.
 \begin{itemize}
 	\item In the first figure the Allo data
@@ -223,14 +222,15 @@ appear to be nonlinear while the Auto data is roughly linear.
 for both groups.\footnote{Note that the book generally chops off extreme $t$ values. The probable
 justification is the small sample size in the tails although the book
 doesn't even mention that it is does this at all, and only a comparison
-of the figures that we generated versus figures 12.1-4 in the book
-shows that they did in fact do this. In our figures, we elected to keep the extreme $t$ values.}
+of the figures that I generated versus figures 12.1-4 in the book
+shows that they did in fact do this.}
 \end{itemize}
 
+\newpage
 
-\begin{centering}
 
-<<echo=FALSE, fig.align='center', fig.width=8, fig.height=9, warning=FALSE, fig.cap='Diagnostic plots for the Allo survival data (gold) plotted along with the Auto survival data (green).'>>=
+
+<<echo=FALSE, fig.align='center', fig.width=8, fig.height=9, warning=FALSE>>=
 # Allo-Auto Data ----------------------------------------------------------
 # Survival Analysis Ch. 9 -------------------------------------------------
 
@@ -264,11 +264,11 @@ km_fit_groups <- alloauto |>
 
 allo_fit <- alloauto %>%
   filter(type == 1) %>%
-  survfit(Surv(time, event = delta) ~ 1, data = .)
+  survfit(Surv(time, delta) ~ 1, data = .)
 
 auto_fit <- alloauto %>%
   filter(type == 2) %>%
-  survfit(Surv(time, event = delta) ~ 1, data = .)
+  survfit(Surv(time, delta) ~ 1, data = .)
 
 tb <- tibble(
   "Time" = 1:length(auto_fit$cumhaz[-49]),
@@ -289,13 +289,12 @@ tb <- tibble(
 
 p1 <- tb |> 
   ggplot(aes(Time, value, colour = type)) +
-  geom_line() +
+  geom_step() +
   scale_color_manual(values = c(baylor_gold, baylor_green)) +
   labs(title = "Exponential",
        x = "Time",
        y = "Est. Cumulative Hazard",
        color = "Group") +
-  xlim(0, 20) +
   theme_minimal(base_size = 10) +
   theme(legend.position = "none")
 
@@ -305,21 +304,20 @@ p1 <- tb |>
 
 p2 <- tb |> 
   ggplot(aes(l_time, l_val, colour = type)) +
-  geom_line() +
+  geom_step() +
   scale_color_manual(values = c(baylor_gold, baylor_green)) +
   labs(title = "Weibull",
        x = "Log Time",
        y = "Log Est. Cumulative Hazard",
        color = "Group")  +
-  theme_minimal(base_size = 10) +
-  theme(legend.position = "none")
+  theme_minimal(base_size = 10)
 
 
-# # # Figure 12.3 -------------------------------------------------------------
+# Figure 12.3 -------------------------------------------------------------
 
 p3 <- tb |> 
   ggplot(aes(l_time, l_norm, colour = type)) +
-  geom_line() +
+  geom_step() +
   scale_color_manual(values = c(baylor_gold, baylor_green)) +
   labs(title = "Log-Normal",
        x = "Log Time",
@@ -333,7 +331,7 @@ p3 <- tb |>
 
 p4 <- tb |> 
   ggplot(aes(l_time, l_logistic, colour = type)) +
-  geom_line() +
+  geom_step() +
   scale_color_manual(values = c(baylor_gold, baylor_green)) +
   labs(title = "Log-Logistic",
        x = "Log Time",
@@ -346,7 +344,7 @@ p4 <- tb |>
 (p1 + p2) / (p3 + p4)
 @
 
-\end{centering}
+
 \newpage
 
 \subsection{Checking appropriateness of accelerated failure-time model}
@@ -356,7 +354,7 @@ p4 <- tb |>
 \item The plot is based on the fact that, for the accelerated failure-time model,
 
 \begin{align*}
-S_{1}(t) & =S_{0}(\theta t),
+S_{1}(t) & =S_{2}(\theta t),
 \end{align*}
 
 where $S_{0}$ and $S_{1}$ are the survival functions in the two
@@ -367,7 +365,7 @@ of the groups, we have the following relationship
 
 
 \begin{align*}
-t_{kp} & =S_{k}^{-1}(1-p), \quad k \in (0, 1).
+t_{kp} & =S_{k}^{-1}(1-p).
 \end{align*}
 
 
@@ -375,38 +373,25 @@ t_{kp} & =S_{k}^{-1}(1-p), \quad k \in (0, 1).
 
 
 \begin{align*}
-S_{0}(t_{0p}) & =1-p=S_{1}(t_{1p})=S_{0}(\theta t_{1p}).
+S_{0}(t_{0p}) & =1-p=S_{1}(t_{1p})=S_{0}(\theta t_{1p}),
 \end{align*}
+
+
 
 if the model holds.
 
 \item This can be checked by computing the Kaplan-Meier estimators of the
-two groups, estimating the percentiles $t_{0p}$, $t_{1p}$ for various
-values of $p$, and then plotting the estimated percentiles in the first group against the estimated percentiles the second group. If the assumption
-holds, the graph should be a straight line with slope $\theta$.
-\end{itemize}
+two groups, estimating the percentiles $t_{1p}$, $t_{2p}$ for various
+values of $p$, and then plotting the estimated percentiles in group
+$1$ against the estimated percentiles in group $2$. If the assumption
+holds, the graph should be a straight line with slope $\theta$.\end{itemize}
 
-\noindent\textit{\textbf{Example:
-Waiting Time to Transplant (Continued)}} Again consider the Allo-Auto dataset. A Kaplan-Meier estimate
+\noindent{\textbf{Example}  12.1 (continued)}
+
+\noindent Again consider the Allo-Auto data set. A Kaplan-Meier estimate
 is calculated for each group and the percentiles $p=.05,.1,\cdots,.35$
-are calculated for each group and plotted against each other below.
-<<eval=FALSE, include=FALSE>>=
-tb2 <- tibble(
-  "allo" = c(allo_fit$surv, NA, NA),
-  "auto" = auto_fit$surv,
-  "x" = seq(from = 0.55, to = 1, length.out = 49),
-  "y" = x
-) 
-tb2 |> 
-  ggplot() +
-  geom_line(aes(allo, allo)) +
-  geom_line(aes(x, y), color = "red") + 
-  labs(title = "QQ-Plot for the Allo-Auto Data",
-       x = "Allo Survival Quantiles",
-       y = "Auto Survival Quantiles") +
-  theme_minimal(base_size = 10) +
-  theme(legend.position = "none")
-@
+are calculated for each group and plotted against each other below
+.
 
 \includegraphics[scale=0.5]{figures/presentation_pic2.pdf}
 
@@ -423,7 +408,7 @@ For the parametric regression problem, analogs of the residual plots described i
 
 \subsubsection{Cox-Snell residuals}
 \begin{itemize}
-\item In equation (7.1.2), Cox–Snell residual is defined as $r_{j}=\widehat{H}(T_{j}|\mathbf{Z}_{j})$, where $\widehat{H}$
+\item The Cox–Snell residual is defined as $r_{j}=\widehat{H}(T_{j}|\mathbf{Z}_{j})$, where $\widehat{H}$
 is the fitted model. If the model fits the data, then the $r_{j}'s$
 should have a standard exponential distribution so that a hazard plot
 of $r_{j}$ versus the Nelson-Aalen estimator of the cumulative hazard
@@ -439,16 +424,16 @@ of the $r_{j}'s$ should be a straight line with slope 1.
 \hline 
 \hline 
 Exponential &
-$\hat{\lambda}t_{i}\exp\left\{ \boldsymbol{\hat{\beta'}}\boldsymbol{Z}_{i}\right\} $\tabularnewline
+$\widehat{\lambda}t_{i}\exp\left\{ \widehat{\mathbf{\beta}}^{T}\mathbf{Z}_{i}\right\} $\tabularnewline
 \hline 
 Weibull &
-$\hat{\lambda}\exp\left\{ \boldsymbol{\hat{\beta'}}\mathbf{Z}_{i}\right\} t_{1}^{\hat{\alpha}}$\tabularnewline
+$\widehat{\lambda}\exp\left\{ \mathbf{\widehat{\beta}}^{T}\mathbf{Z}_{i}\right\} t_{1}^{\widehat{\alpha}}$\tabularnewline
 \hline 
 Log logistic &
-$\log\left[\frac{1}{1+\hat{\lambda}\exp\left\{ \hat{\boldsymbol{\beta'}}\mathbf{Z}_{i}\right\} t_{i}^{\hat{\alpha}}}\right]$\tabularnewline
+$\log\left[\frac{1}{1+\widehat{\lambda}\exp\left\{ \widehat{\mathbf{\beta}}^{T}\mathbf{Z}_{i}\right\} t_{i}^{\widehat{\alpha}}}\right]$\tabularnewline
 \hline 
 Log normal &
-$\log\left[1-\Phi\left(\frac{\log T_{i}-\boldsymbol{\hat{\mu}}-\boldsymbol{\hat{\gamma}'}\mathbf{Z}_{i}}{\hat{\sigma}}\right)\right]$\tabularnewline
+$\log\left[1-\Phi\left(\frac{\log T_{i}-\mathbf{\widehat{\mu}}-\mathbf{\widehat{\gamma}}^{T}\mathbf{Z}_{i}}{\widehat{\sigma}}\right)\right]$\tabularnewline
 \hline 
 \end{tabular}
 
@@ -460,23 +445,23 @@ $\log\left[1-\Phi\left(\frac{\log T_{i}-\boldsymbol{\hat{\mu}}-\boldsymbol{\hat{
 
 
 \begin{align*}
-s_{j} & =\frac{\log T_{j}-\hat{\mu}-\boldsymbol{\hat{\gamma}'}\mathbf{Z}_{j}}{\widehat{\sigma}}
+s_{j} & =\frac{\log T_{j}-\widehat{\mu}-\mathbf{\widehat{\gamma}}^{T}\mathbf{Z}_{j}}{\widehat{\sigma}}
 \end{align*}
 
 
 \end{itemize}
 
-\noindent\textit{\textbf{Example: Regression for Laryngeal Cancer Data}}
+\noindent{\textbf{Example} 12.2}
 
-\noindent In Figure 9.2, the cumulative hazard plots for the Cox–Snell residuals are shown for the exponential, Weibull, log logistic and log normal regression models for the laryngeal cancer data. We see from these plots that all four models give reasonable fits to the data, the best being the log normal and log logistic models.
+\noindent In Figures 12.6–12.9, the cumulative hazard plots for the Cox–Snell residuals are shown for the exponential, Weibull, log logistic and log normal regression models for the laryngeal cancer data. We see from these plots that all four models give reasonable fits to the data, the best being the log normal and log logistic models.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=.25\textwidth]{figures/figure1}\quad
-  \includegraphics[width=.25\textwidth]{figures/figure2}\\
-  \includegraphics[width=.25\textwidth]{figures/figure3}\quad
-  \includegraphics[width=.25\textwidth]{figures/figure4}
-  \caption{Cox–Snell residuals to assess the fit of (a) Exponential, (b) Weibull, (c) Log-logistic and (d) Log-normal regression model for the laryngeal cancer dataset.}
+  \includegraphics[width=.2\textwidth]{figures/figure1}\quad
+  \includegraphics[width=.2\textwidth]{figures/figure2}\\
+  \includegraphics[width=.2\textwidth]{figures/figure3}\quad
+  \includegraphics[width=.2\textwidth]{figures/figure4}
+  \caption{Cox–Snell residuals to assess the fit of (a) Exponential, (b) Weibull, (c) Log-logistic and (d) Log-normal regression model for the laryngeal cancer data set}
   \label{fig:sub1}
 \end{figure}
 
@@ -537,6 +522,7 @@ Martingale and deviance residuals for these parametric models are available in R
 Survival of patients on the waiting list for the Stanford heart transplant program. (Found as the example data in R). Covariates include age, an indicator for if the patient has had a prior bypass surgery (surgery), an indicator for if they've had a heart transplant (transplant), and interaction between age and transplant as well as surgery and transplant. ($n = 172$) 
 
 <<>>=
+library(survival)
 data(heart)
 
 fit <- coxph(Surv(start, stop, event) ~ (age + surgery) * transplant,
@@ -546,9 +532,8 @@ dresid <- resid(fit, collapse=heart$id, type = "deviance") #Deviance Residuals
 @
 
 <<>>=
-par(mfrow = c(2, 1))
-plot(seq(mresid), mresid, xlab = "time", ylab = "Martingale Residuals")
-plot(seq(dresid), dresid, xlab = "time", ylab = "Deviance Residuals")
+qqnorm(dresid, xlab = "time", ylab = "Deviance Residuals", pch = 19)
+qqline(dresid)
 @
 
 
