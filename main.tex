@@ -188,7 +188,8 @@
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Diagnostic Methods for Parametric Models (KM p. 409) \\
-\small{(Last Updated by Carson Slater, Jacob Moore, Thomas Reinke)}} 
+\small{(Notes by Mark Eschmann, Updated by Sonish Lamsal)\\
+(Last Updated by Carson Slater (9.1- 9.2), Thomas Reinke (9.3) and Jacob Moore (9.4-9.5))}} 
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \normalsize
@@ -208,7 +209,7 @@
 \item Graphical checks are preferred over formal statistical tests due to their superior performance in small-sample sizes, where they are more sensitive to deviations from model assumptions. Formal statistical tests in this context are criticized due to low power.
 \item The graphical models discussed in this context serve as a paradigm for identifying and rejecting clearly inappropriate models, rather than providing conclusive evidence for the correctness of a particular parametric model.
 \end{itemize}
-\subsection{Checking adequacy of given model in a univariate setting}
+\subsection{Checking Adequacy of Given Model in a Univariate Setting}
 
 \begin{itemize}
 	\item The key idea is ``to find a function of the cumulative hazard rate
@@ -259,21 +260,14 @@ $\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularn
 \end{tabular} 
 \end{center}
 
+\vspace{0.5cm}
 
-\noindent{\textbf{Example}
-12.1 (continued)}
+\noindent\textit{\textbf{Example: Waiting Time to Transplant (KM pp. 411-413)}}: 
 
-\noindent Consider the Allo-Auto data set. Below are plots of the
-four diagnostic plots recommended above.
+\noindent Consider the data presented in Section 1.10 of KM comparing allogeneic (Allo) bone marrow transplants from an HLA-matched sibling or an autogeneic (Auto) bone marrow transplant for patients with either Hodgkin’s disease (HL) or non-Hodgkin’s lymphoma (NHL). Below are plots of the four diagnostic plots recommended above.
 \begin{itemize}
-	\item In the first figure the Allo data
-appear to be nonlinear while the Auto data is roughly linear.
-	\item  For the other three figures, the book claims that they are roughly linear
-for both groups.\footnote{Note that the book generally chops off extreme $t$ values. The probable
-justification is the small sample size in the tails although the book
-doesn't even mention that it is does this at all, and only a comparison
-of the figures that I generated versus figures 12.1-4 in the book
-shows that they did in fact do this.}
+	\item In the first figure, the Allo data appear to be nonlinear while the Auto data is roughly linear.
+	\item For the other three figures, the book claims that they are roughly linear for both groups.\footnote{Note that the book generally chops off extreme $t$ values. The probable justification is the small sample size in the tails, although the book doesn't even mention that it does this at all, and only a comparison of the figures that I generated versus figures 12.1-4 in the book shows that they did in fact do this.}
 \end{itemize}
 
 \newpage
@@ -281,28 +275,15 @@ shows that they did in fact do this.}
 
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-1-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'type' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'type' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'auto\_fit' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'tb' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'tb' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'tb' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'tb' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'p1' not found}}\end{kframe}
 \end{knitrout}
 
-
-\newpage
 
 \subsection{Checking appropriateness of accelerated failure-time model}
 \begin{itemize}
@@ -495,9 +476,7 @@ Survival of patients on the waiting list for the Stanford heart transplant progr
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{#par(mfrow = c(2, 1))}
-\hlcom{#plot(seq(mresid), mresid, xlab = "time", ylab = "Martingale Residuals")}
-\hlkwd{qqnorm}\hldef{(dresid,} \hlkwc{xlab} \hldef{=} \hlsng{"time"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Deviance Residuals"}\hldef{)}
+\hlkwd{qqnorm}\hldef{(dresid,} \hlkwc{xlab} \hldef{=} \hlsng{"time"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Deviance Residuals"}\hldef{,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{)}
 \hlkwd{qqline}\hldef{(dresid)}
 \end{alltt}
 \end{kframe}

@@ -1,8 +1,8 @@
-\contentsline {section}{\numberline {9}Diagnostic Methods for Parametric Models (KM p. 409) \\ \small {(Last Updated by Carson Slater, Jacob Moore, Thomas Reinke)}}{2}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Checking adequacy of given model in a univariate setting}{2}{subsection.9.1}%
+\contentsline {section}{\numberline {9}Diagnostic Methods for Parametric Models (KM p. 409) \\ \small {(Notes by Mark Eschmann, Updated by Sonish Lamsal)\\ (Last Updated by Carson Slater (9.1- 9.2), Thomas Reinke (9.3) and Jacob Moore (9.4-9.5))}}{2}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Checking Adequacy of Given Model in a Univariate Setting}{2}{subsection.9.1}%
 \contentsline {subsection}{\numberline {9.2}Other Models}{2}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Checking appropriateness of accelerated failure-time model}{4}{subsection.9.3}%
-\contentsline {subsection}{\numberline {9.4}Parametric residuals}{5}{subsection.9.4}%
-\contentsline {subsubsection}{\numberline {9.4.1}Cox-Snell residuals}{5}{subsubsection.9.4.1}%
+\contentsline {subsection}{\numberline {9.3}Checking appropriateness of accelerated failure-time model}{3}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}Parametric residuals}{4}{subsection.9.4}%
+\contentsline {subsubsection}{\numberline {9.4.1}Cox-Snell residuals}{4}{subsubsection.9.4.1}%
 \contentsline {subsubsection}{\numberline {9.4.2}Martingale and deviance residuals}{6}{subsubsection.9.4.2}%
 \contentsline {subsection}{\numberline {9.5}Practical Note}{7}{subsection.9.5}%
