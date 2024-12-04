@@ -425,8 +425,8 @@ tibble(allo_percentile, auto_percentile) |>
 @
 
 
-\noindent Note that only the the range of percentiles $.05$ to $.35$ is actually plotted above, but the portion that is plotted looks roughly linear.
-The figure appears to have a slope $q$ between $0.6$ and $0.8$, which is our crude estimate for the acceleration factor $\theta$.
+\noindent Note that only the range of percentiles $.05$ to $.35$ is actually plotted above, but the portion that is plotted looks roughly linear.
+The curve appears to have a slope $q$ between $0.6$ and $0.8$, which is our crude estimate for the acceleration factor $\theta$.
 \footnote{Klein \& Moeschberger do not mention why only percentiles from .05--.35 are chosen. A likely reason is that for the Allogenic group, the estimated percentile values are NA after $p > .45$}
 
 \newpage
