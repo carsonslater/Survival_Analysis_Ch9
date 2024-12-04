@@ -565,6 +565,8 @@ qqnorm(dresid, xlab = "time", ylab = "Deviance Residuals", pch = 19)
 qqline(dresid)
 @
 
+\newpage
+
 \subsection{Code Appendix}
 \subsubsection{Code for graphics in section 9.2 (Replicates Figures 12.1-12.4 in KM)}
 
