@@ -291,7 +291,7 @@ $\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularn
 \item The plot is based on the fact that, for the accelerated failure-time model,
 
 \begin{align*}
-S_{1}(t) & =S_{2}(\theta t),
+S_{1}(t) & =S_{0}(\theta t),
 \end{align*}
 
 where $S_{0}$ and $S_{1}$ are the survival functions in the two
@@ -589,6 +589,60 @@ Survival of patients on the waiting list for the Stanford heart transplant progr
   \hlkwd{theme}\hldef{(}\hlkwc{legend.position} \hldef{=} \hlsng{"none"}\hldef{)}
 
 \hldef{(p1} \hlopt{+} \hldef{p2)} \hlopt{/} \hldef{(p3} \hlopt{+} \hldef{p4)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{Code for graphic in section 9.3}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Allo-Auto Data ----------------------------------------------------------}
+\hlcom{# Survival Analysis Ch. 9 -------------------------------------------------}
+
+\hlkwd{library}\hldef{(survival)}
+\hlkwd{library}\hldef{(KMsurv)}
+\hlkwd{library}\hldef{(ggplot2)}
+\hlkwd{library}\hldef{(dplyr)}
+\hlkwd{theme_set}\hldef{(}\hlkwd{theme_minimal}\hldef{())}
+
+\hlkwd{data}\hldef{(}\hlsng{"alloauto"}\hldef{)}
+
+\hldef{km_fit} \hlkwb{<-} \hlkwd{survfit}\hldef{(}\hlkwd{Surv}\hldef{(time, delta)} \hlopt{~} \hldef{type,} \hlkwc{data} \hldef{= alloauto)}
+
+\hldef{allo_percentile} \hlkwb{<-} \hlkwd{quantile}\hldef{(km_fit[}\hlnum{1}\hldef{],} \hlkwc{probs} \hldef{=} \hlkwd{seq}\hldef{(}\hlnum{.05}\hldef{,} \hlnum{.35}\hldef{,} \hlkwc{by} \hldef{=} \hlnum{.05}\hldef{))}\hlopt{$}\hldef{quantile}
+\hldef{auto_percentile} \hlkwb{<-} \hlkwd{quantile}\hldef{(km_fit[}\hlnum{2}\hldef{],} \hlkwc{probs} \hldef{=} \hlkwd{seq}\hldef{(}\hlnum{.05}\hldef{,} \hlnum{.35}\hldef{,} \hlkwc{by} \hldef{=} \hlnum{.05}\hldef{))}\hlopt{$}\hldef{quantile}
+
+\hlkwd{tibble}\hldef{(allo_percentile, auto_percentile) |>}
+  \hlkwd{ggplot}\hldef{(}\hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= auto_percentile,} \hlkwc{y} \hldef{= allo_percentile))} \hlopt{+}
+  \hlkwd{geom_line}\hldef{()} \hlopt{+}
+  \hlkwd{scale_x_continuous}\hldef{(}\hlkwc{name} \hldef{=} \hlsng{"Estimated Percentile for Auto Group"}\hldef{,}
+                     \hlkwc{breaks} \hldef{=} \hlkwd{seq}\hldef{(}\hlnum{0}\hldef{,} \hlnum{12}\hldef{,} \hlkwc{by} \hldef{=} \hlnum{2}\hldef{),}
+                     \hlkwc{limits} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{12}\hldef{))} \hlopt{+}
+  \hlkwd{scale_y_continuous}\hldef{(}\hlkwc{name} \hldef{=} \hlsng{"Estimated Percentile for Allo Group"}\hldef{,}
+                     \hlkwc{breaks} \hldef{=} \hlkwd{seq}\hldef{(}\hlnum{0}\hldef{,} \hlnum{12}\hldef{,} \hlkwc{by} \hldef{=} \hlnum{2}\hldef{),}
+                     \hlkwc{limits} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{12}\hldef{))} \hlopt{+}
+  \hlkwd{theme}\hldef{(}
+    \hlkwc{axis.line} \hldef{=} \hlkwd{element_line}\hldef{(}
+      \hlkwc{colour} \hldef{=} \hlsng{"black"}\hldef{,}
+      \hlkwc{size} \hldef{=} \hlnum{.5}\hldef{,}
+      \hlkwc{linetype} \hldef{=} \hlsng{"solid"}
+    \hldef{),}
+    \hlkwc{panel.grid.minor} \hldef{=} \hlkwd{element_blank}\hldef{(),}
+    \hlkwc{panel.grid.major} \hldef{=} \hlkwd{element_blank}\hldef{()}
+  \hldef{)}
+
+\hlcom{# estimate slope ------------------------------------------------}
+
+\hlcom{# tibble(allo_percentile, auto_percentile) |>}
+\hlcom{#  lm(data = _, formula = allo_percentile ~ auto_percentile)}
+\hlcom{# (8.88-2.14)/(11.5 - 4.93)}
+\hlcom{# (8.88 - .855)/(11.5 - 1.41)}
+
+\hlcom{# Allo has no percentile estimates past 45}
+\hlcom{#quantile(km_fit[1], probs = seq(.05, .95, by = .05))$quantile}
+\hlcom{#quantile(km_fit[2], probs = seq(.05, .95, by = .05))$quantile}
 \end{alltt}
 \end{kframe}
 \end{knitrout}

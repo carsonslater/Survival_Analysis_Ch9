@@ -345,7 +345,7 @@ p4 <- tb |>
 \item The plot is based on the fact that, for the accelerated failure-time model,
 
 \begin{align*}
-S_{1}(t) & =S_{2}(\theta t),
+S_{1}(t) & =S_{0}(\theta t),
 \end{align*}
 
 where $S_{0}$ and $S_{1}$ are the survival functions in the two
@@ -682,6 +682,57 @@ p4 <- tb |>
   theme(legend.position = "none")
 
 (p1 + p2) / (p3 + p4)
+@
+
+\subsubsection{Code for graphic in section 9.3}
+
+<<echo=TRUE, eval=FALSE, fig.align='center', fig.width=5, fig.height=5, warning=FALSE, message=FALSE>>=
+# Allo-Auto Data ----------------------------------------------------------
+# Survival Analysis Ch. 9 -------------------------------------------------
+
+library(survival)
+library(KMsurv)
+library(ggplot2)
+library(dplyr)
+theme_set(theme_minimal())
+
+data("alloauto")
+
+km_fit <- survfit(Surv(time, delta) ~ type, data = alloauto)
+
+allo_percentile <- quantile(km_fit[1], probs = seq(.05, .35, by = .05))$quantile
+auto_percentile <- quantile(km_fit[2], probs = seq(.05, .35, by = .05))$quantile
+
+tibble(allo_percentile, auto_percentile) |>
+  ggplot(aes(x = auto_percentile, y = allo_percentile)) +
+  geom_line() +
+  scale_x_continuous(name = "Estimated Percentile for Auto Group",
+                     breaks = seq(0, 12, by = 2),
+                     limits = c(0, 12)) +
+  scale_y_continuous(name = "Estimated Percentile for Allo Group",
+                     breaks = seq(0, 12, by = 2),
+                     limits = c(0, 12)) +
+  theme(
+    axis.line = element_line(
+      colour = "black",
+      size = .5,
+      linetype = "solid"
+    ),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank()
+  )
+
+# estimate slope ------------------------------------------------
+
+# tibble(allo_percentile, auto_percentile) |>
+#  lm(data = _, formula = allo_percentile ~ auto_percentile)
+# (8.88-2.14)/(11.5 - 4.93)
+# (8.88 - .855)/(11.5 - 1.41)
+
+# Allo has no percentile estimates past 45
+#quantile(km_fit[1], probs = seq(.05, .95, by = .05))$quantile
+#quantile(km_fit[2], probs = seq(.05, .95, by = .05))$quantile
+
 @
 
 \subsubsection{Code for graphics in section 9.5}
