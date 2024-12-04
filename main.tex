@@ -458,6 +458,140 @@ Martingale and deviance residuals for these parametric models are available in R
 
 Survival of patients on the waiting list for the Stanford heart transplant program. (Found as the example data in R). Covariates include age, an indicator for if the patient has had a prior bypass surgery (surgery), an indicator for if they've had a heart transplant (transplant), and interaction between age and transplant as well as surgery and transplant. ($n = 172$) 
 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+
+}
+
+
+\end{knitrout}
+
+\subsection{Code Appendix}
+\subsubsection{Code for graphics in section 9.2 (Replicates Figures 12.1-12.4 in KM)}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Allo-Auto Data ----------------------------------------------------------}
+\hlcom{# Survival Analysis Ch. 9 -------------------------------------------------}
+
+\hlcom{# Packages ----------------------------------------------------------------}
+\hlkwd{library}\hldef{(}\hlsng{"tidyverse"}\hldef{)}
+\hlkwd{library}\hldef{(}\hlsng{"KMsurv"}\hldef{)}
+\hlkwd{library}\hldef{(}\hlsng{"survival"}\hldef{)}
+\hlkwd{library}\hldef{(}\hlsng{"scales"}\hldef{,} \hlkwc{warn.conflicts} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hlkwd{library}\hldef{(}\hlsng{"patchwork"}\hldef{)}
+\hlkwd{library}\hldef{(}\hlsng{"tinytex"}\hldef{)}
+\hlkwd{theme_update}\hldef{(}\hlkwc{panel.grid.minor} \hldef{=} \hlkwd{element_blank}\hldef{())}
+
+\hldef{baylor_green} \hlkwb{<-} \hlsng{"steelblue"}
+\hldef{baylor_gold} \hlkwb{<-} \hlsng{"firebrick"}
+
+\hldef{aa} \hlkwb{<-} \hlkwd{data}\hldef{(}\hlsng{"alloauto"}\hldef{)}
+
+
+\hlcom{# Fit the survival model for each group and extract cumulative hazards}
+\hldef{km_fit_groups} \hlkwb{<-} \hldef{alloauto |>}
+  \hlkwd{group_by}\hldef{(type)} \hlopt{%>%}
+  \hlkwd{do}\hldef{(}
+    \hlkwc{fit} \hldef{=} \hlkwd{survfit}\hldef{(}\hlkwd{Surv}\hldef{(time, delta)} \hlopt{~} \hlnum{1}\hldef{,} \hlkwc{data} \hldef{= .)}
+  \hldef{) |>}
+  \hlkwd{mutate}\hldef{(}
+    \hlkwc{time} \hldef{=} \hlkwd{list}\hldef{(fit}\hlopt{$}\hldef{time),}
+    \hlkwc{cumhaz} \hldef{=} \hlkwd{list}\hldef{(fit}\hlopt{$}\hldef{cumhaz)}
+  \hldef{) |>}
+  \hlkwd{unnest}\hldef{(}\hlkwd{c}\hldef{(time, cumhaz)) |>}
+  \hlkwd{select}\hldef{(type, time, cumhaz) |>} \hlkwd{mutate}\hldef{(}\hlkwc{type} \hldef{=} \hlkwd{as.factor}\hldef{(type))}
+
+\hldef{allo_fit} \hlkwb{<-} \hldef{alloauto} \hlopt{%>%}
+  \hldef{dplyr}\hlopt{::}\hlkwd{filter}\hldef{(type} \hlopt{==} \hlnum{1}\hldef{)} \hlopt{%>%}
+  \hlkwd{survfit}\hldef{(}\hlkwd{Surv}\hldef{(time, delta)} \hlopt{~} \hlnum{1}\hldef{,} \hlkwc{data} \hldef{= .)}
+
+\hldef{auto_fit} \hlkwb{<-} \hldef{alloauto} \hlopt{%>%}
+  \hldef{dplyr}\hlopt{::}\hlkwd{filter}\hldef{(type} \hlopt{==} \hlnum{2}\hldef{)} \hlopt{%>%}
+  \hlkwd{survfit}\hldef{(}\hlkwd{Surv}\hldef{(time, delta)} \hlopt{~} \hlnum{1}\hldef{,} \hlkwc{data} \hldef{= .)}
+
+\hldef{tb} \hlkwb{<-} \hlkwd{tibble}\hldef{(}
+  \hlsng{"Time"} \hldef{=} \hlnum{1}\hlopt{:}\hlkwd{length}\hldef{(auto_fit}\hlopt{$}\hldef{cumhaz[}\hlopt{-}\hlnum{49}\hldef{]),}
+  \hlsng{"Allo"} \hldef{=} \hlkwd{c}\hldef{(allo_fit}\hlopt{$}\hldef{cumhaz,} \hlnum{NA}\hldef{),}
+  \hlsng{"Auto"} \hldef{= auto_fit}\hlopt{$}\hldef{cumhaz[}\hlopt{-}\hlnum{49}\hldef{]}
+\hldef{) |>} \hlkwd{pivot_longer}\hldef{(}
+  \hlkwc{cols} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Allo"}\hldef{,} \hlsng{"Auto"}\hldef{),}
+  \hlkwc{names_to} \hldef{=} \hlsng{"type"}
+\hldef{) |>} \hlkwd{mutate}\hldef{(}
+  \hlkwc{l_time} \hldef{=} \hlkwd{log}\hldef{(Time),}
+  \hlkwc{l_val} \hldef{=} \hlkwd{log}\hldef{(value),}
+  \hlkwc{l_norm} \hldef{=} \hlkwd{qnorm}\hldef{(}\hlnum{1} \hlopt{-} \hlkwd{exp}\hldef{(}\hlopt{-}\hldef{value)),}
+  \hlkwc{l_logistic} \hldef{=} \hlkwd{log}\hldef{(}\hlkwd{exp}\hldef{(value} \hlopt{-} \hlnum{1}\hldef{))}
+\hldef{)}
+
+\hlcom{# 1st Plot Attempt --------------------------------------------------------}
+\hlcom{# Figure 12.1}
+
+\hldef{p1} \hlkwb{<-} \hldef{tb |>}
+  \hlkwd{ggplot}\hldef{(}\hlkwd{aes}\hldef{(Time, value,} \hlkwc{colour} \hldef{= type))} \hlopt{+}
+  \hlkwd{geom_step}\hldef{()} \hlopt{+}
+  \hlkwd{scale_color_manual}\hldef{(}\hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"firebrick"}\hldef{,} \hlsng{"steelblue"}\hldef{))} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Exponential"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Time"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Est. Cumulative Hazard"}\hldef{,}
+       \hlkwc{color} \hldef{=} \hlsng{"Group"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{(}\hlkwc{base_size} \hldef{=} \hlnum{10}\hldef{)} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{legend.position} \hldef{=} \hlsng{"none"}\hldef{)}
+
+
+\hlcom{# Figure 12.2 -------------------------------------------------------------}
+
+
+\hldef{p2} \hlkwb{<-} \hldef{tb |>}
+  \hlkwd{ggplot}\hldef{(}\hlkwd{aes}\hldef{(l_time, l_val,} \hlkwc{colour} \hldef{= type))} \hlopt{+}
+  \hlkwd{geom_step}\hldef{()} \hlopt{+}
+  \hlkwd{scale_color_manual}\hldef{(}\hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(baylor_gold, baylor_green))} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Weibull"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Log Time"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Log Est. Cumulative Hazard"}\hldef{,}
+       \hlkwc{color} \hldef{=} \hlsng{"Group"}\hldef{)}  \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{(}\hlkwc{base_size} \hldef{=} \hlnum{10}\hldef{)} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{legend.position} \hldef{=} \hlsng{"none"}\hldef{)}
+
+
+\hlcom{# Figure 12.3 -------------------------------------------------------------}
+
+\hldef{p3} \hlkwb{<-} \hldef{tb |>}
+  \hlkwd{ggplot}\hldef{(}\hlkwd{aes}\hldef{(l_time, l_norm,} \hlkwc{colour} \hldef{= type))} \hlopt{+}
+  \hlkwd{geom_step}\hldef{()} \hlopt{+}
+  \hlkwd{scale_color_manual}\hldef{(}\hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(baylor_gold, baylor_green))} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Log-Normal"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Log Time"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Probit(1 - exp(H(t)))"}\hldef{,}
+       \hlkwc{color} \hldef{=} \hlsng{"Group"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{(}\hlkwc{base_size} \hldef{=} \hlnum{10}\hldef{)} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{legend.position} \hldef{=} \hlsng{"none"}\hldef{)}
+
+
+\hlcom{# Figure 12.4 -------------------------------------------------------------}
+
+\hldef{p4} \hlkwb{<-} \hldef{tb |>}
+  \hlkwd{ggplot}\hldef{(}\hlkwd{aes}\hldef{(l_time, l_logistic,} \hlkwc{colour} \hldef{= type))} \hlopt{+}
+  \hlkwd{geom_step}\hldef{()} \hlopt{+}
+  \hlkwd{scale_color_manual}\hldef{(}\hlkwc{values} \hldef{=} \hlkwd{c}\hldef{(baylor_gold, baylor_green))} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"Log-Logistic"}\hldef{,}
+       \hlkwc{x} \hldef{=} \hlsng{"Log Time"}\hldef{,}
+       \hlkwc{y} \hldef{=} \hlsng{"Log Odds"}\hldef{,}
+       \hlkwc{color} \hldef{=} \hlsng{"Group"}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{(}\hlkwc{base_size} \hldef{=} \hlnum{10}\hldef{)} \hlopt{+}
+  \hlkwd{theme}\hldef{(}\hlkwc{legend.position} \hldef{=} \hlsng{"none"}\hldef{)}
+
+\hldef{(p1} \hlopt{+} \hldef{p2)} \hlopt{/} \hldef{(p3} \hlopt{+} \hldef{p4)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsubsection{Code for graphics in section 9.5}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -470,16 +604,6 @@ Survival of patients on the waiting list for the Stanford heart transplant progr
 \hldef{dresid} \hlkwb{<-} \hlkwd{resid}\hldef{(fit,} \hlkwc{collapse}\hldef{=heart}\hlopt{$}\hldef{id,} \hlkwc{type} \hldef{=} \hlsng{"deviance"}\hldef{)} \hlcom{#Deviance Residuals}
 \end{alltt}
 \end{kframe}
-\end{knitrout}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{qqnorm}\hldef{(dresid,} \hlkwc{xlab} \hldef{=} \hlsng{"time"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Deviance Residuals"}\hldef{,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{)}
-\hlkwd{qqline}\hldef{(dresid)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
 \end{knitrout}
 
 
