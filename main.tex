@@ -273,7 +273,6 @@ $\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularn
 \newpage
 
 
-
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
@@ -288,7 +287,7 @@ $\ln\left\{ \exp\left(\widehat{H}(t)\right)-1\right\} $ versus $\ln(t)$\tabularn
 \subsection{Checking appropriateness of accelerated failure-time model}
 \begin{itemize}
 \item When comparing two groups, an alternative to the proportional hazards model is the accelerated failure-time model.
-\item A QQ plot can be used to determine the adequacy of this model.
+\item A QQ plot is be used to determine the adequacy of this model.
 \item The plot is based on the fact that, for the accelerated failure-time model,
 
 \begin{align*}
@@ -298,23 +297,18 @@ S_{1}(t) & =S_{2}(\theta t),
 where $S_{0}$ and $S_{1}$ are the survival functions in the two
 groups and $\theta$ is the acceleration factor.
 
-\item Thus letting $t_{0p}$ and $t_{1p}$ be the $p^{th}$ percentiles
+\item Letting $t_{0p}$ and $t_{1p}$ be the $p^{th}$ percentiles
 of the groups, we have the following relationship
 
-
 \begin{align*}
-t_{kp} & =S_{k}^{-1}(1-p).
+t_{kp} & =S_{k}^{-1}(1-p), \, k = 0,1
 \end{align*}
-
 
 \item Thus 
 
-
 \begin{align*}
-S_{0}(t_{0p}) & =1-p=S_{1}(t_{1p})=S_{0}(\theta t_{1p}),
+S_{0}(t_{0p}) & =1-p=S_{1}(t_{1p})=S_{0}(\theta t_{1p}), \forall t
 \end{align*}
-
-
 
 if the model holds.
 
@@ -322,23 +316,28 @@ if the model holds.
 two groups, estimating the percentiles $t_{1p}$, $t_{2p}$ for various
 values of $p$, and then plotting the estimated percentiles in group
 $1$ against the estimated percentiles in group $2$. If the assumption
-holds, the graph should be a straight line with slope $\theta$.\end{itemize}
+holds, the graph should be a straight line with slope $\theta$. If the curve is linear, then a crude estimate of the acceleration factor $q$ is given by the slop of the line. \end{itemize}
 
 \noindent{\textbf{Example}  12.1 (continued)}
 
-\noindent Again consider the Allo-Auto data set. A Kaplan-Meier estimate
-is calculated for each group and the percentiles $p=.05,.1,\cdots,.35$
-are calculated for each group and plotted against each other below
-.
+\noindent Again consider the Allo-Auto data set with allogenic transplants (group 0) and autologous translants (group 1). A Kaplan-Meier estimate is calculated for each group and the percentiles $p=.05,.1,\cdots,.35$ are calculated for each group and plotted against each other below.
 
-\includegraphics[scale=0.5]{figures/presentation_pic2.pdf}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+
+}
 
 
+\end{knitrout}
 
-\noindent Note that only a portion of the range $.05$ to $.35$ is actually
-plotted above, but the portion that is plotted looks roughly linear.
-The figure appears to have a slope of about $\theta=0.6$.
 
+\noindent Note that only the the range of percentiles $.05$ to $.35$ is actually plotted above, but the portion that is plotted looks roughly linear.
+The figure appears to have a slope $q$ between $0.6$ and $0.8$, which is our crude estimate for the acceleration factor $\theta$.
+\footnote{Klein \& Moeschberger do not mention why only percentiles from .05--.35 are chosen. A likely reason is that for the Allogenic group, the estimated percentile values are NA after $p > .45$}
+
+\newpage
 
 \subsection{Parametric residuals}
 
@@ -480,7 +479,7 @@ Survival of patients on the waiting list for the Stanford heart transplant progr
 \hlkwd{qqline}\hldef{(dresid)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
 \end{knitrout}
 
 
